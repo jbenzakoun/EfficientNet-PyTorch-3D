@@ -196,7 +196,7 @@ class BlockDecoder(object):
 
         # Check stride
         assert (('s' in options and len(options['s']) == 1) or
-                (len(options['s']) == 3 and options['s'][0] == options['s'][1] == options['s'][2]))
+                (len(options['s']) == 3))
 
         return BlockArgs(
             kernel_size=int(options['k']),

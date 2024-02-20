@@ -11,6 +11,7 @@ from .utils import (
     efficientnet_params,
     Swish,
     MemoryEfficientSwish,
+    BlockDecoder,
 )
 
 class MBConvBlock3D(nn.Module):
@@ -199,9 +200,13 @@ class EfficientNet3D(nn.Module):
         return x
 
     @classmethod
-    def from_name(cls, model_name, override_params=None, in_channels=3):
+    def from_name(cls, model_name, override_params=None, in_channels=3, blocks_args=None):
         cls._check_model_name_is_valid(model_name)
-        blocks_args, global_params = get_model_params(model_name, override_params)
+        if blocks_args is not None:
+            _, global_params = get_model_params(model_name, override_params)
+            blocks_args = BlockDecoder.decode(blocks_args)
+        else:
+            blocks_args, global_params = get_model_params(model_name, override_params)
         return cls(blocks_args, global_params, in_channels)
 
     @classmethod
